@@ -1,0 +1,43 @@
+hostname pe01
+no ip domain lookup
+!
+interface Loopback0
+ ip address 192.0.2.11 255.255.255.255
+!
+interface Ethernet0/0
+ description to cust01
+ ip address 198.51.100.1 255.255.255.252
+ no shutdown
+!
+interface Ethernet0/1
+ description to pe02
+ ip address 192.0.2.1 255.255.255.252
+ ip ospf network point-to-point
+ no shutdown
+!
+router ospf 1
+ router-id 192.0.2.11
+ passive-interface Loopback0
+ network 192.0.2.0 0.0.0.3 area 0
+ network 192.0.2.11 0.0.0.0 area 0
+!
+router bgp 64500
+ bgp router-id 192.0.2.11
+ bgp log-neighbor-changes
+ neighbor 198.51.100.2 remote-as 64511
+ neighbor 198.51.100.2 description cust01
+ neighbor 192.0.2.12 remote-as 64500
+ neighbor 192.0.2.12 description pe02
+ neighbor 192.0.2.12 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 198.51.100.2 activate
+  neighbor 192.0.2.12 activate
+  neighbor 192.0.2.12 next-hop-self
+ exit-address-family
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+!
+end

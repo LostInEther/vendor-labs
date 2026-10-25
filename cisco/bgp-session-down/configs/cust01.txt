@@ -1,0 +1,28 @@
+hostname cust01
+no ip domain lookup
+!
+interface Loopback0
+ description customer LAN
+ ip address 203.0.113.1 255.255.255.0
+!
+interface Ethernet0/0
+ description to pe01
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+!
+router bgp 64511
+ bgp router-id 203.0.113.1
+ bgp log-neighbor-changes
+ neighbor 198.51.100.1 remote-as 64500
+ neighbor 198.51.100.1 description pe01
+ !
+ address-family ipv4
+  network 203.0.113.0 mask 255.255.255.0
+  neighbor 198.51.100.1 activate
+ exit-address-family
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+!
+end
