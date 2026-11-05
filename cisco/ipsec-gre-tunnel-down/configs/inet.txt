@@ -1,0 +1,19 @@
+hostname inet
+no ip domain lookup
+logging buffered 64000
+!
+interface Ethernet0/0
+ description to r1
+ ip address 192.0.2.1 255.255.255.252
+ no shutdown
+!
+interface Ethernet0/1
+ description to r2
+ ip address 192.0.2.5 255.255.255.252
+ no shutdown
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+!
+end

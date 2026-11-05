@@ -1,0 +1,29 @@
+hostname r2
+no ip domain lookup
+logging buffered 64000
+!
+interface Loopback0
+ ip address 192.0.2.2 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description to r1
+ ip address 198.51.100.2 255.255.255.252
+ ip ospf 1 area 0
+ no shutdown
+!
+interface Ethernet0/1
+ description to r3
+ ip address 198.51.100.5 255.255.255.252
+ ip ospf 1 area 1
+ no shutdown
+!
+router ospf 1
+ router-id 192.0.2.2
+ passive-interface Loopback0
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+!
+end
