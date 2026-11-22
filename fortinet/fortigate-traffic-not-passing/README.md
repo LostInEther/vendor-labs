@@ -52,7 +52,3 @@ You should get replies to both pings and `hello from srv01` from the curl. That'
 ## Shutting down
 
 Run `execute shutdown` on fgt02's console before you stop the lab. Stopping a FortiGate without shutting it down first can leave its disk needing a check at the next boot.
-
-## Optional: running commands on fgt02 with pyATS
-
-CML's pyATS automation has no FortiGate plugin, and the default plugins don't recognise FortiOS's `hostname # ` prompt, so automated commands hang after logging in. In this lab, setting the fortigate node definition's PyATS operating system to `cimc` worked for both show commands and config blocks. That's a workaround, not something Fortinet or Cisco support.
